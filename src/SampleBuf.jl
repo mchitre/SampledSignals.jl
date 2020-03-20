@@ -9,12 +9,12 @@ buffer will be an MxC matrix. So a 1-second stereo audio buffer sampled at
 type SampleBuf{Float32, 2}.
 """
 mutable struct SampleBuf{T, N} <: AbstractSampleBuf{T, N}
-    data::Array{T, N}
+    data::AbstractArray{T, N}
     samplerate::Float64
 end
 
 # define constructor so conversion is applied to `sr`
-SampleBuf(arr::Array{T, N}, sr::Real) where {T, N} = SampleBuf{T, N}(arr, sr)
+SampleBuf(arr::AbstractArray{T, N}, sr::Real) where {T, N} = SampleBuf{T, N}(arr, sr)
 
 """
 Represents a multi-channel regularly-sampled buffer representing the frequency-
@@ -25,12 +25,12 @@ sampled at 44100Hz with 32-bit floating-point samples in the time domain would
 have the type SampleBuf{Float32, 2}.
 """
 mutable struct SpectrumBuf{T, N} <: AbstractSampleBuf{T, N}
-    data::Array{T, N}
+    data::AbstractArray{T, N}
     samplerate::Float64
 end
 
 # define constructor so conversion is applied to `sr`
-SpectrumBuf(arr::Array{T, N}, sr::Real) where {T, N} = SpectrumBuf{T, N}(arr, sr)
+SpectrumBuf(arr::AbstractArray{T, N}, sr::Real) where {T, N} = SpectrumBuf{T, N}(arr, sr)
 
 SampleBuf(T::Type, sr, dims...) = SampleBuf(Array{T}(undef, dims...), sr)
 SpectrumBuf(T::Type, sr, dims...) = SpectrumBuf(Array{T}(undef, dims...), sr)
