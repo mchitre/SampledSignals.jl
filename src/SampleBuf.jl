@@ -74,6 +74,9 @@ Base.similar(buf::SampleBuf, ::Type{T}, dims::Dims) where {T} = SampleBuf(Array{
 Base.similar(buf::SpectrumBuf, ::Type{T}, dims::Dims) where {T} = SpectrumBuf(Array{T}(undef, dims), framerate(buf))
 domain(buf::AbstractSampleBuf) = range(0.0, stop=(nframes(buf)-1)/framerate(buf), length=nframes(buf))
 
+# deal with re-wrapping views
+Base.view(buf::AbstractSampleBuf, ind...) = SampleBuf(view(buf.data, ind...), buf.samplerate)
+
 # There's got to be a better way to define these functions, but the dispatch
 # and broadcast behavior for AbstractArrays is complex and has subtle differences
 # between Julia versions, so we basically just override functions here as they

@@ -519,4 +519,13 @@ end
         display(TextDisplay(iobuf), buf)
         @test String(take!(iobuf)) == expected
     end
+
+    @testset "views on SampleBuf work" begin
+        buf = SampleBuf(ones(500), 48000)
+        vbuf = @view buf[100:200]
+        @test vbuf isa SampleBuf
+        vbuf[10] = 2.7
+        @test buf[109] == 2.7
+    end
+
 end
